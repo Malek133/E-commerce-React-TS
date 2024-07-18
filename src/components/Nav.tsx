@@ -2,11 +2,12 @@
 import { Button } from './ui/button'
 import { ModeToggle } from './mode-toggle'
 import { Link} from 'react-router-dom';
+import { SheetCard } from './SheatCard';
 
 const Nav = () => {
   return (
     <>
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between pb-16">
         <div className='text-4xl font-semibold'>
            <Link to='/'>
            My App
@@ -30,6 +31,7 @@ const Nav = () => {
           <Link to='/Login'>LogIn</Link>
              </Button>
             <ModeToggle />
+            <SheetCard />
           </div>
           
       </div>
