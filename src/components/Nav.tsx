@@ -27,7 +27,7 @@ const Nav = () => {
             </ul>
         </div>
         <div className="flex justify-center items-center space-x-5">
-         <Button>
+         <Button className='hover:bg-red-400'>
           <Link to='/Login'>LogIn</Link>
              </Button>
             <ModeToggle />

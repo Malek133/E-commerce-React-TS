@@ -11,6 +11,7 @@ import StatPage from './components/StatPage';
 import DashboardLyaout from './pages/dashboard/DashboardLyaout';
 import DashboardProducts from './pages/dashboard/DashboardProducts';
 import AdminDashboard from './pages/dashboard';
+import ProductDetails from './pages/ProductDetails';
 
 function App() {
   
@@ -23,7 +24,7 @@ function App() {
         <Routes>
      <Route path="/" element={<HomePage />} />
      
-     <Route element={<DashboardLyaout />} path="/Dashboard">
+          <Route element={<DashboardLyaout />} path="/Dashboard">
             <Route index element={<AdminDashboard />} />
             <Route path="products" element={<DashboardProducts />} />
             <Route path="Explore" element={<h5>Explore test</h5>} />
@@ -32,6 +33,7 @@ function App() {
            </Route>
 
      <Route path='/Products' element={<ProductsPage />} />
+     <Route path="/Products/:id" element={<ProductDetails />} />
      <Route path='/Stat' element={<StatPage />} />
      <Route path='/Aboute' element={<AboutePage />} />
      <Route path='/Login' element={<LogInPage />} />

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -16,7 +17,6 @@ import {
 
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -27,7 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+
 import {
   Table,
   TableBody,
@@ -36,8 +36,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { EditProduct } from "@/components/EditProduct";
-import { DeleteProduct } from "@/components/DeleteProduct";
+import { Pencil,Trash2 } from "lucide-react"
+import { Input } from "@/components/ui/input"
 
 const data: Payment[] = [
   {
@@ -80,6 +80,7 @@ export type Payment = {
 }
 
 export const columns: ColumnDef<Payment>[] = [
+ 
   {
     id: "select",
     header: ({ table }) => (
@@ -145,6 +146,9 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       const payment = row.original
 
+     
+      
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -162,8 +166,8 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <div className="flex items-center justify-around">
-              <DropdownMenuItem><EditProduct /></DropdownMenuItem>
-              <DropdownMenuItem><DeleteProduct /></DropdownMenuItem>
+              <DropdownMenuItem ><Trash2 /></DropdownMenuItem>
+              <DropdownMenuItem >< Pencil /></DropdownMenuItem>
             </div>
       
           </DropdownMenuContent>
@@ -174,6 +178,7 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 const DashboardProducts=()=> {
+  
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
