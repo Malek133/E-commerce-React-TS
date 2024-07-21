@@ -103,17 +103,19 @@ interface ImageFormats {
 
 const ProductDetails: React.FC<ProductsPageProps> = () => {
 
-    // const [data, setData] = useState<ProductsResponse>({ data: [] });
-    // const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState(true);
      const { id } = useParams<{ id: string }>();
-  
+
     useEffect(() => {
       axios
-        .get<ProductsResponse>(`http://localhost:1337/api/products/${id}?populate=categories,image`)
+        .get<ProductsResponse>(`${import.meta.env.VITE_SERVER_URL}/api/products/${id}?populate=categories,image`)
         .then((response) => {
-          setData(response.data.data);
+          if (response.data.data.length > 0) {
+            setData(response.data.data[0]); // Access the first element of the array
+          } else {
+            setData(null);
+          }
           setLoading(false);
         })
         .catch((error) => {
@@ -149,7 +151,7 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
                 <img
                   width={'200px'}
                   height={'auto'}
-                  src={`http://localhost:1337${attributes.image.data.attributes.url}`}
+                  src={`${import.meta.env.VITE_SERVER_URL}${attributes.image.data.attributes.url}`}
                   alt={attributes.title}
                 />
               </div>
@@ -172,45 +174,6 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
       </Card>
       <div></div>
     </section>
-
-
-{/* <section className="h-auto grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 m-10">
-      {data.data.map((i) => (
-        <Card key={i.id} className="w-[350px]">
-          <CardHeader>
-            <CardTitle>{i.attributes.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form>
-              <div className="grid w-full items-center gap-4">
-                <div className="h-auto flex items-center justify-center">
-                  <img
-                    width={'200px'}
-                    height={'auto'}
-                    src={`http://localhost:1337${i.attributes.image.data.attributes.url}`}
-                    alt={i.attributes.title}
-                  />
-                </div>
-                <CardTitle className="py-3">Prix : $ {i.attributes.price}</CardTitle>
-                <CardDescription className="py-3">
-                  {i.attributes.des}
-                  <br />
-                  Stock: {i.attributes.stock}
-                  <br />
-                  Rate: {i.attributes.rate}
-                  <br />
-                </CardDescription>
-              </div>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <Button className="px-10 py-6 w-full text-xl hover:bg-red-400">
-              Detail
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
-    </section> */}
       
     </>
   )

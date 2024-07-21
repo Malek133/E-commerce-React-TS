@@ -1,91 +1,8 @@
-// import { Button } from "@/components/ui/button"
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card"
-// import { useEffect, useState } from "react"
-// import axios from "axios"
-
-
-// const ProductsPage = ({attributes}) => {
-
-//   const [data, setData] = useState([])
-//   const [loading, setLoading] = useState(true)
- 
-
-//   useEffect(() => {
-//     // Remplacez 'your-api-url' par l'URL de votre API
-//     axios.get('http://localhost:1337/api/products?populate=categories,image')
-//       .then(response => {
-//         setData(response.data)
-//         setLoading(false)
-//       })
-//       .catch(error => {
-//         console.log(error)
-//         setLoading(false)
-//       })
-//   }, [])
-
-//   if (loading) return <p>Loading...</p>
-  
-
-//   return (
-//     <section className="h-auto 
-//     grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 m-10">
-
-//    {
-//     data.data.map(i=>(
-//      <Card key={i.attributes.id} className="w-[350px] ">
-//       <CardHeader>
-//         <CardTitle>{i.attributes.title}</CardTitle>
-//       </CardHeader>
-//       <CardContent>
-//         <form>
-//           <div className="grid w-full items-center gap-4">
-          
-//             <div className="h-auto flex items-center justify-center">
-//               <img width={'200px'} height={'auto'}
-//               src="https://i.pinimg.com/564x/9f/53/07/9f530796791ac6bcd56078e8d8ee8615.jpg" alt="" />
-//             </div>
-//             <CardTitle className="py-3">Prix : $ {i.attributes.price}</CardTitle>
-            
-            
-//         <CardDescription className="py-3">Deploy your new project in one-click.<br />
-//         Deploy your new project in one-click.
-//         Deploy your new project in one-click.<br />
-//         Deploy your new project in one-click.<br />
-//         </CardDescription>
-      
-          
-//           </div>
-//         </form>
-//       </CardContent>
-//       <CardFooter>
-//         <Button className="px-10 py-6 w-full text-xl hover:bg-red-400">Detail</Button>
-//       </CardFooter>
-//     </Card> 
-//     ))
-//    }
-
-//     </section>
-//   )
-// }
-
-
-// export default ProductsPage
 
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  Card,CardContent,CardDescription,
+  CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -185,7 +102,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 
   useEffect(() => {
     axios
-      .get<ProductsResponse>('http://localhost:1337/api/products?populate=categories,image')
+      .get<ProductsResponse>(`${import.meta.env.VITE_SERVER_URL}/api/products?populate=categories,image`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -212,7 +129,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
                   <img
                     width={'200px'}
                     height={'auto'}
-                    src={`http://localhost:1337${i.attributes.image.data.attributes.url}`}
+                    src={`${import.meta.env.VITE_SERVER_URL}${i.attributes.image.data.attributes.url}`}
                     alt={i.attributes.title}
                   />
                 </div>
@@ -241,8 +158,6 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
               Detail
             </Button> 
             </Link>
-            
-           
             
           </CardFooter>
         </Card>
