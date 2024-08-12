@@ -1,13 +1,13 @@
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,CardContent,CardDescription,
-  CardFooter, CardHeader, CardTitle,
-} from "@/components/ui/card";
-import { useEffect, useState } from "react";
+
+import {CardContent} from "@/components/ui/card";
+
 import axios from "axios";
-import { Link } from 'react-router-dom';
+
 import { SkeletonDemo } from "@/components/SkeletonProduct";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import ProductCard from "@/components/ProductCard";
 
 interface ImageFormats {
   thumbnail: {
@@ -82,87 +82,44 @@ interface ProductAttributes {
   image: Image;
 }
 
+interface ProductsPageProps {
+  attributes?: ProductAttributes;
+}
+
 interface ProductData {
   id: number;
   attributes: ProductAttributes;
 }
 
-interface ProductsResponse {
-  data: ProductData[];
-}
-
-interface ProductsPageProps {
-  attributes?: ProductAttributes;
-}
 
 
 const ProductsPage: React.FC<ProductsPageProps> = () => {
-  const [data, setData] = useState<ProductsResponse>({ data: [] });
-  const [loading, setLoading] = useState<boolean>(true);
+
+
+  const getProductList = async () => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_SERVER_URL}/api/products?populate=image&fields=price&fields=title`
+    );
+    return data;
+  };
+
+  const { isLoading, data } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProductList,
+  });
 
   useEffect(() => {
-    axios
-      .get<ProductsResponse>(`${import.meta.env.VITE_SERVER_URL}/api/products?populate=categories,image`)
-      .then((response) => {
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-  }, []);
+    document.title=`Product ${data?.data?.attributes?.title} Page`;
+           }, [data])
 
-  if (loading) return <div><SkeletonDemo /></div>;
+  if (isLoading) return <CardContent><SkeletonDemo /></CardContent>;
 
   return (
-    <section className="h-auto grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 m-10">
-      { data.data.map((i) => (
-        <Card key={i.id} className="w-[350px]">
-          <CardHeader>
-            <CardTitle>{i.attributes.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form>
-              <div className="grid w-full items-center gap-4">
-                <div className="h-auto flex items-center justify-center">
-                  <img
-                    width={'200px'}
-                    height={'auto'}
-                    src={`${import.meta.env.VITE_SERVER_URL}${i.attributes.image.data.attributes.url}`}
-                    alt={i.attributes.title}
-                  />
-                </div>
-                <CardTitle className="py-3">Prix : $ {i.attributes.price}</CardTitle>
-
-                <CardDescription className="py-3 flex items-center justify-between">
-                  <p>Stock: {i.attributes.stock}</p>
-                  
-                  <p>Rate: {i.attributes.rate}</p>
-                  
-                </CardDescription>
-
-                <CardDescription className="py-3">
-                  {i.attributes.des}
-                </CardDescription>
-
-              </div>
-            </form>
-          </CardContent>
-          <CardFooter>
-            
-            <Link className="w-full"
-            to={`/Products/${i.id}`}>
-                 <Button 
-                 className="px-10 py-6 w-full text-xl hover:bg-red-400">
-              Detail
-            </Button> 
-            </Link>
-            
-          </CardFooter>
-        </Card>
+    <CardContent className="h-auto grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 m-10">
+      { data.data && data.data.map((i: ProductData) => (
+        <ProductCard key={i.id} {...i} />
       ))}
-    </section>
+    </CardContent>
   );
 };
 

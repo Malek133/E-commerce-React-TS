@@ -1,8 +1,11 @@
+import { CardContent, CardTitle } from "@/components/ui/card"
 
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <CardContent>
+      <CardTitle>Home</CardTitle>
+      </CardContent>
   )
 }
 

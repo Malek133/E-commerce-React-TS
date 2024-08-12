@@ -1,6 +1,6 @@
 
 
-import { SkeletonDemoDetails } from "@/components/SkeletonProductDetails";
+ import { SkeletonDemoDetails } from "@/components/SkeletonProductDetails";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
  import { useParams,Link } from "react-router-dom";
 
 
@@ -88,48 +90,54 @@ interface ImageFormats {
     image: Image;
   }
   
-  interface ProductData {
-    id: number;
-    attributes: ProductAttributes;
-  }
-  
-  interface ProductsResponse {
-    data: ProductData[];
-  }
-  
   interface ProductsPageProps {
     attributes?: ProductAttributes;
   }
 
 const ProductDetails: React.FC<ProductsPageProps> = () => {
 
-    const [data, setData] = useState<ProductData | null>(null);
-  const [loading, setLoading] = useState(true);
-     const { id } = useParams<{ id: string }>();
+     const { id } = useParams<{ id:string }>();
+
+     const getProductList = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/products/${id}?populate=image&fields=price&fields=title`
+      );
+      return data;
+    };
+
+    const { isLoading, data,error } = useQuery(
+     
+         {
+       queryKey: ["products", id],
+       queryFn: getProductList,
+     }
+    
+  );
 
     useEffect(() => {
-      axios
-        .get<ProductsResponse>(`${import.meta.env.VITE_SERVER_URL}/api/products/${id}?populate=categories,image`)
-        .then((response) => {
-          if (response.data.data.length > 0) {
-            setData(response.data.data[0]); // Access the first element of the array
-          } else {
-            setData(null);
-          }
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
-        });
-    }, [id]);
+      
+        document.title = `Product store | Product ${id} Page`;
+      
+    }, []);
+
+    if (isLoading)
+      return (
+        
+          <SkeletonDemoDetails />
+        
+      );
+      if (error) return <div>Erreur de chargement des données</div>;
+
+  const product = data?.data;
+  const attributes = product?.attributes;
+
+  if (!attributes) return <div>Produit non trouvé</div>;
   
-    if (loading) return <div><SkeletonDemoDetails /></div>;
+  // const { attributes } = data;
 
-    if (!data) return <p>Product not found</p>;
 
-  const { attributes } = data;
-    
+
+ 
   return (
     <>
         <Link to='/Products'>
@@ -139,7 +147,8 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
             </Link>
 
 <section className="flex items-center justify-between m-10">
-    <div></div>
+    {/* <div></div> */}
+    <CardContent></CardContent>
       <Card className="w-[550px]">
         <CardHeader>
           <CardTitle>{attributes.title}</CardTitle>
@@ -180,3 +189,7 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
 }
 
 export default ProductDetails
+
+
+
+          
