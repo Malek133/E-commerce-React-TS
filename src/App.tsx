@@ -1,28 +1,32 @@
 
 
 import './App.css'
-import Nav from "./components/Nav";
+
 import {Routes , Route} from 'react-router-dom'
 import HomePage from './pages/HomePage';
 import AboutePage from './pages/AboutePage';
 import ProductsPage from './pages/ProductsPage';
-import LogInPage from './pages/LogInPage';
+// import LogInPage from './pages/LogInPage';
 import StatPage from './components/StatPage';
 import DashboardLyaout from './pages/dashboard/DashboardLyaout';
 import DashboardProducts from './pages/dashboard/DashboardProducts';
 import AdminDashboard from './pages/dashboard';
 import ProductDetails from './pages/ProductDetails';
+import Nav from './components/Nav';
+// import AppLyout from './lyaout/AppLyout';
+// import CookiesService from './services/CookiesService';
 
 function App() {
   
+  // const token = CookiesService.get('jwt')
 
   return (
     <>
     
-      <Nav />
+    <Nav />
       <section className='my-10'>
         <Routes>
-     <Route path="/" element={<HomePage />} />
+     
      
           <Route element={<DashboardLyaout />} path="/Dashboard">
             <Route index element={<AdminDashboard />} />
@@ -32,11 +36,18 @@ function App() {
             <Route path="Settings" element={<h5>Settings test</h5>} />
            </Route>
 
-     <Route path='/Products' element={<ProductsPage />} />
-     <Route path="/Products/:id" element={<ProductDetails />} />
-     <Route path='/Stat' element={<StatPage />} />
-     <Route path='/Aboute' element={<AboutePage />} />
-     <Route path='/Login' element={<LogInPage />} />
+           {/* <Route path='/' element={<AppLyout isAuthenticated={token } />}> */}
+               <Route path='/' element={<HomePage />} />
+               <Route path='/Products' element={<ProductsPage />} />
+               <Route path="/Products/:id" element={<ProductDetails />} />
+               <Route path='/Stat' element={<StatPage />} />
+               <Route path='/Aboute' element={<AboutePage />} />
+           {/* </Route> */}
+
+    
+
+
+     {/* <Route path='/Login' element={<LogInPage   />} /> */}
       </Routes>
       </section>
       

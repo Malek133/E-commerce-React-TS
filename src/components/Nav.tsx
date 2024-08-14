@@ -1,8 +1,12 @@
 
-import { Button } from './ui/button'
+// import { Button } from './ui/button'
 import { ModeToggle } from './mode-toggle'
 import { Link} from 'react-router-dom';
 import { SheetCard } from './SheatCard';
+import { SignedIn, SignedOut,
+   SignInButton, UserButton
+   } from "@clerk/clerk-react";
+
 
 const Nav = () => {
   return (
@@ -14,11 +18,11 @@ const Nav = () => {
            </Link> 
         </div>
         <div>
-            <ul className='flex items-center justify-center gap-10 text-xl font-medium'>
+            <ul className='flex items-center justify-center gap-10 text-md font-medium'>
 
-                <li><Link to="/Dashboard">Dashboard</Link></li>
+                 {/* <li><Link to="/Dashboard">Dashboard</Link></li> */}
 
-                <li><Link to={'/Products'}>Products</Link></li>
+                {/* <li><Link to={'/Products'}>Products</Link></li> */}
 
                 <li><Link to={'/Aboute'}>Aboute</Link></li>
 
@@ -27,9 +31,37 @@ const Nav = () => {
             </ul>
         </div>
         <div className="flex justify-center items-center space-x-5">
-         <Button className='hover:bg-red-400'>
+         {/* <Button className='hover:bg-red-400'>
           <Link to='/Login'>LogIn</Link>
-             </Button>
+             </Button> */}
+             <header>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <div className='flex justify-between items-center gap-5 font-semibold'>
+         <SignedIn>
+
+      <Link to={'/Dashboard'}>
+           
+              <span className='md:block hidden'>
+              Dashboard
+                </span>
+           
+          </Link>
+
+          <Link to={'/Products'}>
+           
+              <span className='md:block hidden'>
+              Products
+                </span>
+            
+          </Link>
+
+        <UserButton />
+      </SignedIn> 
+      </div>
+    
+    </header>
             <ModeToggle />
             <SheetCard />
           </div>
