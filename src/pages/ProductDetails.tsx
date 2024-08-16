@@ -1,6 +1,7 @@
 
 
- import { SkeletonDemoDetails } from "@/components/SkeletonProductDetails";
+ import { addToCart } from "@/app/feauture/CartSlice";
+import { SkeletonDemoDetails } from "@/components/SkeletonProductDetails";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,6 +14,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
  import { useParams,Link } from "react-router-dom";
 
@@ -96,6 +98,8 @@ interface ImageFormats {
 
 const ProductDetails: React.FC<ProductsPageProps> = () => {
 
+  const dispatch = useDispatch()
+
      const { id } = useParams<{ id:string }>();
 
      const getProductList = async () => {
@@ -136,7 +140,10 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
   // const { attributes } = data;
 
 
-
+  const AddToCartHandler = () =>{
+    
+     dispatch(addToCart(data.data))
+  }
  
   return (
     <>
@@ -176,7 +183,9 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
           </form>
         </CardContent>
         <CardFooter>
-          <Button className="px-10 py-6 w-full text-xl">
+          <Button 
+          onClick={AddToCartHandler}
+          className="px-10 py-6 w-full text-xl">
            Add To Cart
           </Button>
         </CardFooter>

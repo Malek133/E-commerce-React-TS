@@ -24,6 +24,7 @@ interface ProductAttributes {
 
 
 const ProductCard: React.FC<ProductCardProps> = ({id,attributes}) => {
+  
   return (
     <>
     <Card  className="w-[350px]">
@@ -62,6 +63,7 @@ const ProductCard: React.FC<ProductCardProps> = ({id,attributes}) => {
             <Link className="w-full"
             to={`/Products/${id}`}>
                  <Button 
+                 
                  className="px-10 py-6 w-full text-xl hover:bg-red-400">
               Detail
             </Button> 

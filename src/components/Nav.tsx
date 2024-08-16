@@ -6,6 +6,7 @@ import { SheetCard } from './SheatCard';
 import { SignedIn, SignedOut,
    SignInButton, UserButton
    } from "@clerk/clerk-react";
+import { Button } from './ui/button';
 
 
 const Nav = () => {
@@ -16,17 +17,16 @@ const Nav = () => {
            <Link to='/'>
            My App
            </Link> 
-        </div>
-        <div>
+        
             <ul className='flex items-center justify-center gap-10 text-md font-medium'>
 
                  {/* <li><Link to="/Dashboard">Dashboard</Link></li> */}
 
                 {/* <li><Link to={'/Products'}>Products</Link></li> */}
 
-                <li><Link to={'/Aboute'}>Aboute</Link></li>
+                {/* <li><Link to={'/Aboute'}>Aboute</Link></li>
 
-                <li><Link to={'/Stat'}>Stat</Link></li>
+                <li><Link to={'/Stat'}>Stat</Link></li> */}
 
             </ul>
         </div>
@@ -34,16 +34,16 @@ const Nav = () => {
          {/* <Button className='hover:bg-red-400'>
           <Link to='/Login'>LogIn</Link>
              </Button> */}
-             <header>
+             <Button>
       <SignedOut>
         <SignInButton />
       </SignedOut>
-      <div className='flex justify-between items-center gap-5 font-semibold'>
+      <div className='flex justify-between items-center gap-10 text-lg font-semibold'>
          <SignedIn>
 
       <Link to={'/Dashboard'}>
            
-              <span className='md:block hidden'>
+              <span className=''>
               Dashboard
                 </span>
            
@@ -51,19 +51,40 @@ const Nav = () => {
 
           <Link to={'/Products'}>
            
-              <span className='md:block hidden'>
+              <span className=''>
               Products
                 </span>
             
           </Link>
 
+          <Link to={'/Aboute'}>
+           
+           <span className=''>
+           Aboute
+             </span>
+         
+       </Link>
+
+       <Link to={'/Stat'}>
+           
+           <span className=''>
+          Stat
+             </span>
+         
+       </Link>
+          
         <UserButton />
+        
       </SignedIn> 
+      
       </div>
     
-    </header>
+    </Button>
+   
+      <SheetCard />
+     
             <ModeToggle />
-            <SheetCard />
+            
           </div>
           
       </div>
