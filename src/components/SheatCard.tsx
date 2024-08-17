@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 
 import { ShoppingCart } from 'lucide-react';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Sheet,
   SheetClose,
@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { selectCart } from "@/app/feauture/CartSlice";
+import { clearFromCart, selectCart } from "@/app/feauture/CartSlice";
 import CarteDrawerItem from "./CarteDrawerItem";
 import { CardTitle } from "./ui/card";
 
@@ -23,7 +23,7 @@ import { CardTitle } from "./ui/card";
 export function SheetCard() {
   //  const btnRef = useRef()
   //  const {isOpenCartDrawer} = useSelector(selectGlobal);
-  //  const dispatch = useDispatch()
+    const dispatch = useDispatch()
   //   const onClose: MouseEventHandler<HTMLButtonElement> = () => dispatch(onCloseCartDrawerAction()) 
   //   const onOpen: MouseEventHandler<HTMLButtonElement> = () =>{
   //     if (!isOpenCartDrawer) {
@@ -34,12 +34,14 @@ export function SheetCard() {
  const {CartProducts} = useSelector(selectCart)
   return (
     <Sheet>
-      <SheetTrigger asChild>
+      <SheetTrigger  asChild>
         <Button 
         // onClick={onOpen} 
         variant="outline"><ShoppingCart /><span className="text-xl mx-2"> ({CartProducts.length})</span></Button>
       </SheetTrigger>
-      <SheetContent className="flex-col items-center justify-between">
+
+     
+      <SheetContent className=" flex-col items-center justify-between">
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
           <SheetDescription>
@@ -57,6 +59,7 @@ export function SheetCard() {
         
         <SheetFooter>
           <Button className="bg-red-500 text-white" 
+          onClick={()=>{dispatch(clearFromCart())}}
           type="submit">Clear All</Button>
           <SheetClose asChild>
           
@@ -66,6 +69,7 @@ export function SheetCard() {
           </SheetClose>
         </SheetFooter>
       </SheetContent>
+       
     </Sheet>
   )
 }
