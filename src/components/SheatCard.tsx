@@ -13,6 +13,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { selectCart } from "@/app/feauture/CartSlice";
+import CarteDrawerItem from "./CarteDrawerItem";
+import { CardTitle } from "./ui/card";
+
+
 //  import { MouseEventHandler, useRef } from "react";
 // import { onCloseCartDrawerAction, selectGlobal } from "@/app/feauture/GlobalSlice";
 
@@ -42,6 +46,14 @@ export function SheetCard() {
             Make changes to your profile here. Click save when you're done.
           </SheetDescription>
         </SheetHeader>
+
+        {
+         CartProducts.length ? (
+          CartProducts.map(i =>(
+          <CarteDrawerItem key={i.id} {...i} attributes={i.attributes} /> )) 
+          ) : (
+          <CardTitle>No Product</CardTitle>)    
+        }
         
         <SheetFooter>
           <Button className="bg-red-500 text-white" 
