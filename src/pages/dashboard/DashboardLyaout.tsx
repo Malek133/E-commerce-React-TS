@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Compass, House, Settings, Star, TrendingUp } from 'lucide-react';
-import {Outlet,
+import { Outlet,
      Link as RouterLink } from 'react-router-dom';
 
      interface NavItemProps {
@@ -42,7 +42,7 @@ import {Outlet,
             <section
             className='flex items-center px-20 py-4 mx-4 
             border-r-lg cursor-pointer 
-            hover:bg-cyan-400  rounded'
+            hover:bg-cyan-600  rounded'
               {...rest}>
               {/* {Icon && ( */}
                 <div
@@ -56,11 +56,14 @@ import {Outlet,
           </RouterLink>
         )
       }
-const DashboardLyaout = () => {
+const DashboardLyaout = (
+  // {isAuthenticated}:{isAuthenticated:string | undefined}
+) => {
+  // if(!isAuthenticated) return <Navigate to="/Login" replace />
   return (
     <section className='h-full flex items-center' >
 
-        <div className='h-screen box py-16  rounded'>
+        <div className='h-screen box py-6  rounded'>
           <SidebarContent 
     //  onClose={() => console.log('close')} 
      />

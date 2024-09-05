@@ -1,6 +1,6 @@
 
 import { selectLogin, userLogin } from "@/app/feauture/LoginSlice"
-import { AppDispatch } from "@/app/store"
+//  import { AppDispatch } from "@/app/store"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -100,8 +100,7 @@ const LogInPage = () => {
       {/* </CardContent> */}
       <CardFooter className="flex justify-between py-7">
         
-        <Button
-            type="submit">connexion</Button>
+        <Button  type="submit">connexion</Button>
       </CardFooter>
        </form>
       

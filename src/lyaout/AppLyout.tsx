@@ -1,11 +1,11 @@
-// import Nav from '@/components/Nav';
+
 //  import { Navigate, Outlet } from 'react-router-dom';
 
 // const AppLyout = ({isAuthenticated}:{isAuthenticated:string | undefined}) => {
-//     if(isAuthenticated) return <Navigate to="/" replace />
+//     if(!isAuthenticated) return <Navigate to="/Dashboard" replace />
 //   return (
 //     <>
-//     <Nav />
+   
 //        <Outlet /> 
 //     </>
 //   )
