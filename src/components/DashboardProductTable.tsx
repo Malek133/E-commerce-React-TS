@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Trash2, Pencil,
-  // X  
-} from 'lucide-react';
+import { Trash2, Pencil, X } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useDeleteDashboardProductsMutation,
+import { useCreateDashboardProductMutation, useDeleteDashboardProductsMutation,
   useEditDashboardProductsMutation,
   useGetDashboardProductsQuery } from '@/app/services/ApiSlice';
 import { SkeletonDashboard } from './SkelatonDashboard';
@@ -38,6 +36,14 @@ type Product = {
   attributes: ProductAttributes;
 };
 
+type NProduct = {
+  title: string;
+  price: number;
+  des:string
+  image:File | null
+
+};
+
 interface ProductCardProps {
   id: string | number; // Adjust based on the type of your id
   attributes: ProductAttributes;
@@ -52,15 +58,24 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [clikedProductId,setClikedProductId]=useState<string | null>(null);
   const [productToEdit,setProductToEdit]=useState<Product | null>(null);
-  const [images,setImages]=useState<any | null>(null)
+  const [images,setImages]=useState<File | null>(null)
+  const [newProduct, setNewProduct] = useState<NProduct>({
+    title: '',
+    price:0,
+    des: '',
+    image: null,
+  });
   const { isLoading, data, error } = useGetDashboardProductsQuery(
     { page:currentPage });
- console.log(isCreateOpen);
+  console.log(newProduct);
  const [destroyProduct,{isLoading:isDestroy,isSuccess}
 ]=  useDeleteDashboardProductsMutation();
 
   const [editProduct,{isLoading:isEditing,isSuccess:isEditingSuccess}
   ]=  useEditDashboardProductsMutation();
+
+  const [createProduct,{isLoading:iscreate,
+    isSuccess:iscreateSuccess}]=useCreateDashboardProductMutation();
 
 
 
@@ -92,13 +107,9 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
            price: parseFloat(value), // Assurez-vous que le prix est un nombre
         },
       });
-     console.log(productToEdit?.price)
+     
     }
   };
-
-
-  
-
   
   const onChangeDescriptionHandler = (e: 
     React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -117,11 +128,14 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   };
   
 
-  const onChangeImage = (e:any) =>{
-    setImages(e.target.files[0])
+  const onChangeImage = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    // setImages(e.target.files[0])
+    if (e.target.files && e.target.files[0]) {
+      setImages(e.target.files[0]);
+    }
   }
   
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) =>{
+  const onSubmitHandler = (e:React.MouseEvent<HTMLButtonElement>) =>{
         e.preventDefault();
         const formData = new FormData();
         formData.append("data",JSON.stringify({
@@ -129,9 +143,104 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
          price: productToEdit?.attributes.price,
          des:productToEdit?.des
         }));
-        formData.append("files.image",images);
+        if(images){
+          formData.append("files.image",images);
+        }
+        
         editProduct({id:clikedProductId,body:formData})
   }
+
+    
+  const onNewChangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewProduct({
+      ...newProduct,
+      [name]: value,
+    });
+  };
+
+  const onNewChangePriceHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // Vérifiez que la valeur peut être convertie en nombre
+    const price = parseFloat(value);
+    if (!isNaN(price)) {
+      setNewProduct({
+        ...newProduct,
+        price: price,
+      });
+    }
+  };
+  
+
+  const onNewChangeThumbnailHandler = (e:any) => {
+    setNewProduct({
+      ...newProduct,
+      image: e.target.files[0],
+    });
+  };
+
+  // const onSubmitHandlerCreat = () => {
+  //   const formData = new FormData();
+  //   formData.append('data', JSON.stringify({
+  //     title: newProduct.title,
+  //     price: newProduct.price,
+  //     des: newProduct.des,
+  //   }));
+  //   formData.append('files.image', newProduct.image);
+  
+  //   createProduct(formData)
+  //     .unwrap()
+  //     .then(() => {
+  //       // onCreateModalClose();
+  //       // handleCreate()
+  //       setIsCreateOpen(true)
+  //       setNewProduct({
+  //         title: '',
+  //         price: 0,
+  //         des: '',
+  //         image: null,
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error('Failed to create product:', error);
+  //     });
+  // };
+  
+  const onSubmitHandlerCreat = () => {
+    const formData = new FormData();
+  
+    // Vérifiez que le price est un nombre avant de l'envoyer
+    if (!isNaN(newProduct.price)) {
+      formData.append('data', JSON.stringify({
+        title: newProduct.title,
+        price: newProduct.price, // Assurez-vous que c'est bien un nombre
+        des: newProduct.des,
+      }));
+  
+      if (newProduct.image) {
+        formData.append('files.image', newProduct.image);
+      }
+  
+      createProduct(formData)
+        .unwrap()
+        .then(() => {
+          setIsCreateOpen(false);
+          setNewProduct({
+            title: '',
+            price: 0,
+            des: '',
+            image: null,
+          });
+        })
+        .catch((error) => {
+          console.error('Failed to create product:', error);
+        });
+    } else {
+      console.error("Price is not a valid number");
+    }
+  };
+  
   
 
   useEffect(() =>{
@@ -145,7 +254,16 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
     setIsOpen(false)
   } 
 
-  },[isSuccess,isEditingSuccess])
+  if(iscreateSuccess){
+    setNewProduct({
+      title: '',
+      price: 0,
+      des: '',
+      image: null,
+    })
+  }
+
+  },[isSuccess,isEditingSuccess,iscreateSuccess])
  
   if (isLoading) return <SkeletonDashboard />;
 
@@ -222,7 +340,7 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
                 <TableRow key={product.id}>
                   <TableCell>{product?.id}</TableCell>
                   <TableCell>{product?.attributes?.title}</TableCell>
-                  <TableCell>{`$${product?.attributes?.price.toFixed(2)}`}</TableCell>
+                  <TableCell>{`$${product?.attributes?.price ? product?.attributes?.price.toFixed(2) :'0.00'}`}</TableCell>
                   <TableCell>
                     <div className="flex justify-items-end items-center gap-3">
                       <Button onClick={() =>{
@@ -339,7 +457,7 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
      onOkHandleDelete={() => destroyProduct(clikedProductId)}
      />
 
-{/* <AlertDialogCustom 
+ <AlertDialogCustom 
     title={'Create'}
     des={'Create new  product'}
      save={'Create'}
@@ -347,28 +465,46 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
     onOpen={() => setIsCreateOpen(true)} 
     onClose={() => setIsCreateOpen(false)} 
     isOpen={isCreateOpen}
-    onOkClick={onSubmitHandler} >
+    onOkClick={onSubmitHandlerCreat}
+    isLoading={iscreate}  >
        <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Title
             </Label>
-            <Input id="title" placeholder='title...' value="" className="col-span-3" />
+            <Input id="title" placeholder='title...' name='title'
+             value={newProduct.title} onChange={onNewChangeHandler}  
+            className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="price" className="text-right">
               Price
             </Label>
-            <Input type='number' id="price" value={0} className="col-span-3" />
+            <Input type='number' id="price" name='price' 
+            value={newProduct.price} onChange={onNewChangePriceHandler}
+             className="col-span-3" />
+          </div>
+           
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Descreption
+            </Label>
+            <Input id="title" placeholder='descreption...' name='des'
+             value={newProduct.des} onChange={onNewChangeHandler}  
+            className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="image" className="text-right">
               Image
             </Label>
-            <Input type='file' id="image" value='' className="col-span-3" />
+            <Input type='file' id="image"
+            //  accept='image/png ,image/gif ,imag/jpeg' 
+             name='image'
+             onChange={onNewChangeThumbnailHandler}
+             className="col-span-3" />
           </div>
         </div>
-    </AlertDialogCustom> */}
+    </AlertDialogCustom>
     
     </>
    

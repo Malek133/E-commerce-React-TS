@@ -17,8 +17,8 @@ interface AlertDialogProps {
     des:string
     save:string
     closeb:React.ReactNode
-    children: any
-    onOkClick:any
+    children: React.ReactNode
+    onOkClick:(e: React.MouseEvent<HTMLButtonElement>) => void
     isLoading:boolean
   }
 
@@ -38,10 +38,6 @@ export function AlertDialogCustom({onOpen,onClose,isOpen,title
         <DialogFooter>
         
         <Button type="submit"  onClick={onClose}>{closeb}</Button>
-        
-          {/* <Button type="submit" onClick={onOkClick}  
-          isLoading={isLoading}
-          >{save}</Button> */}
 
            {isLoading ? (
                <Button disabled>Loading...</Button>
