@@ -90,9 +90,6 @@ export const apiSlice = createApi({
         invalidatesTags: [{ type: 'Products', id: 'LIST' }],
       }),
       
-      
-
-
     })
 })
 

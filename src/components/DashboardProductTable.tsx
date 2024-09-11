@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Trash2, Pencil } from 'lucide-react';
+import { Trash2, Pencil,
+  // X  
+} from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useDeleteDashboardProductsMutation, useGetDashboardProductsQuery } from '@/app/services/ApiSlice';
+import { useDeleteDashboardProductsMutation,
+  useEditDashboardProductsMutation,
+  useGetDashboardProductsQuery } from '@/app/services/ApiSlice';
 import { SkeletonDashboard } from './SkelatonDashboard';
 import { Link } from 'react-router-dom';
 import { AlertDialogCustom } from '@/shared/AlertDialogueCustom';
 import { AlertDeleteDialogue } from '@/shared/AlertDeleteDialogue';
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from './ui/textarea';
 
 interface ProductAttributes {
   title: string;
@@ -27,6 +34,7 @@ type Product = {
   id: string;
   title: string;
   price: number;
+  des:string
   attributes: ProductAttributes;
 };
 
@@ -39,30 +47,127 @@ const ITEMS_PER_PAGE = 5;
 
 const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [clikedProductId,setClikedProductId]=useState(null)
+  const [clikedProductId,setClikedProductId]=useState<string | null>(null);
+  const [productToEdit,setProductToEdit]=useState<Product | null>(null);
+  const [images,setImages]=useState<any | null>(null)
   const { isLoading, data, error } = useGetDashboardProductsQuery(
     { page:currentPage });
- console.log(error);
- const [destroyProduct,{isLoading:isDestroy,
-  isSuccess}]=  useDeleteDashboardProductsMutation();
+ console.log(isCreateOpen);
+ const [destroyProduct,{isLoading:isDestroy,isSuccess}
+]=  useDeleteDashboardProductsMutation();
+
+  const [editProduct,{isLoading:isEditing,isSuccess:isEditingSuccess}
+  ]=  useEditDashboardProductsMutation();
+
+
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+  
+    if (productToEdit) {
+      setProductToEdit({
+        ...productToEdit,
+        [name]: value,
+        attributes: {
+          ...productToEdit.attributes,
+          [name]: value,
+        },
+      });
+     
+    }
+     
+  };
+  
+   const onChangeHandlerPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+     const value = e.target.value;
+  
+    if (productToEdit) {
+    setProductToEdit({
+         ...productToEdit,
+      attributes: {
+          ...productToEdit.attributes,
+           price: parseFloat(value), // Assurez-vous que le prix est un nombre
+        },
+      });
+     console.log(productToEdit?.price)
+    }
+  };
+
+
+  
+
+  
+  const onChangeDescriptionHandler = (e: 
+    React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+  
+    if (productToEdit) {
+      setProductToEdit({
+        ...productToEdit,
+        attributes: {
+          ...productToEdit.attributes,
+          // price: +value,
+          des: value, // Mise à jour de la description
+        },
+      });
+    }
+  };
+  
+
+  const onChangeImage = (e:any) =>{
+    setImages(e.target.files[0])
+  }
+  
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("data",JSON.stringify({
+         title:productToEdit?.title,
+         price: productToEdit?.attributes.price,
+         des:productToEdit?.des
+        }));
+        formData.append("files.image",images);
+        editProduct({id:clikedProductId,body:formData})
+  }
+  
 
   useEffect(() =>{
   if(isSuccess){
     setClikedProductId(null)
     setIsDeleteOpen(false)
   }
-  },[isSuccess])
+
+  if(isEditingSuccess){
+    setClikedProductId(null)
+    setIsOpen(false)
+  } 
+
+  },[isSuccess,isEditingSuccess])
  
   if (isLoading) return <SkeletonDashboard />;
-  // if (error) return <div>Error: {error.message}</div>;
+
+  if (error) {
+    if ('data' in error) {
+      // FetchBaseQueryError, afficher les détails de l'erreur
+      return <div>Error: {JSON.stringify(error.data)}</div>;
+    } else if ('message' in error) {
+      // SerializedError, afficher le message d'erreur
+      return <div>Error: {error.message}</div>;
+    } else {
+      // Si l'erreur ne correspond pas à un des types connus
+      return <div>An unknown error occurred.</div>;
+    }
+  }
+  
 
    const products = data?.data || []; // Assuming `data?.data` is the array of products
 
-  const handleDelete = (id: string) => {
-    // Handle delete logic here
-    console.log('Delete product with id:', id);
+  const handleDelete = (id:string) => {
+    
+     console.log('Delete product with id:', id);
     setIsDeleteOpen(true);
   };
 
@@ -70,6 +175,10 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
     // Handle edit logic here
     console.log('Edit product with id:', id);
     setIsOpen(true); // Open the dialog when edit is clicked
+  };
+
+  const handleCreate = () => {
+    setIsCreateOpen(true); // Open the dialog when edit is clicked
   };
 
   const handleNextPage = () => {
@@ -87,6 +196,16 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   return (
     <>
      <div className="w-full mb-56">
+           <div className='my-6 flex justify-end'>
+
+            <Button onClick={()=>{handleCreate()}}
+               className='bg-cyan-500 px-7'>
+                Create
+            </Button>
+
+           </div>
+                      
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -113,7 +232,11 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
                       className='bg-red-500 px-7'>
                         <Trash2 />
                       </Button>
-                      <Button onClick={()=>{handleEdit(product.id)}}
+                      <Button onClick={()=>{
+                        setProductToEdit(product)
+                        handleEdit(product.id)
+                        setClikedProductId(product.id)
+                      }}
                       className='bg-green-500 px-7'>
                         <Pencil />
                       </Button>
@@ -149,9 +272,64 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
     </div>
 
     <AlertDialogCustom 
+    title={'Edit profile'}
+    des={'update this product'}
+     save={'Save changes'}
+     closeb={'close'}
     onOpen={() => setIsOpen(true)} 
     onClose={() => setIsOpen(false)} 
-    isOpen={isOpen} />
+    isOpen={isOpen}
+    onOkClick={onSubmitHandler}
+    isLoading={isEditing} >
+      
+       <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Title
+            </Label>
+            <Input id="title" placeholder='title...' 
+            value={productToEdit ? productToEdit.attributes.title : ''} 
+            className="col-span-3" name='title'
+            onChange={onChangeHandler}
+             />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="price" className="text-right">
+              Price
+            </Label>
+
+            <Input
+              type='number'
+              id="price"
+              name="price" // Vérifiez bien que le name est "price"
+              value={productToEdit ? productToEdit.attributes.price : ''} 
+               className="col-span-3"
+               onChange={onChangeHandlerPrice} // Utilisez bien la fonction onChangeHandlerPrice ici
+             />
+ 
+          </div>
+
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Descreption
+            </Label>
+            <Textarea id="des" placeholder='descreption...' 
+            value={productToEdit ? productToEdit.attributes.des : ''} 
+            className="col-span-3" name='des'
+            onChange={onChangeDescriptionHandler}
+             />
+          </div>
+
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="image" className="text-right">
+              Image
+            </Label>
+            <Input type='file' id="image" onChange={onChangeImage} 
+             className="col-span-3" />
+          </div>
+        </div>
+        
+    </AlertDialogCustom>
 
     <AlertDeleteDialogue
      onOpen={() => setIsDeleteOpen(true)} 
@@ -160,6 +338,37 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
      isLoading={isDestroy}
      onOkHandleDelete={() => destroyProduct(clikedProductId)}
      />
+
+{/* <AlertDialogCustom 
+    title={'Create'}
+    des={'Create new  product'}
+     save={'Create'}
+     closeb={<X />}
+    onOpen={() => setIsCreateOpen(true)} 
+    onClose={() => setIsCreateOpen(false)} 
+    isOpen={isCreateOpen}
+    onOkClick={onSubmitHandler} >
+       <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Title
+            </Label>
+            <Input id="title" placeholder='title...' value="" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="price" className="text-right">
+              Price
+            </Label>
+            <Input type='number' id="price" value={0} className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="image" className="text-right">
+              Image
+            </Label>
+            <Input type='file' id="image" value='' className="col-span-3" />
+          </div>
+        </div>
+    </AlertDialogCustom> */}
     
     </>
    
