@@ -37,7 +37,9 @@ export function SheetCard() {
       <SheetTrigger  asChild>
         <Button 
         // onClick={onOpen} 
-        variant="outline"><ShoppingCart /><span className="text-xl mx-2"> ({CartProducts.length})</span></Button>
+        variant="default"><ShoppingCart />
+        <span className="text-base mx-3"> ({CartProducts.length})</span>
+        </Button>
       </SheetTrigger>
 
      

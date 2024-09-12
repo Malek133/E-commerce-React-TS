@@ -74,14 +74,15 @@ const Nav = () => {
        </Link>
           
         <UserButton />
-        
+         <SheetCard />
       </SignedIn> 
       
       </div>
-    
+
+   
     </Button>
    
-      <SheetCard />
+      
      
             <ModeToggle />
             

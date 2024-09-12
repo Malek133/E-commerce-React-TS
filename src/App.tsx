@@ -13,6 +13,7 @@ import DashboardProducts from './pages/dashboard/DashboardProducts';
 import AdminDashboard from './pages/dashboard';
 import ProductDetails from './pages/ProductDetails';
 import Nav from './components/Nav';
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   
@@ -27,7 +28,7 @@ function App() {
      
        
 
-             <Route element={<DashboardLyaout />} 
+             <Route element={<ProtectedRoute><DashboardLyaout /></ProtectedRoute>} 
              path="/Dashboard">
                <Route index element={< DashboardProducts />} />
                <Route path="products" element={<AdminDashboard />} />
@@ -40,7 +41,7 @@ function App() {
 
            
                <Route path='/' element={<HomePage />} />
-               <Route path='/Products' element={<ProductsPage />} />
+               <Route path='/Products' element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
                <Route path="/Products/:id" element={<ProductDetails />} />
                <Route path='/Stat' element={<StatPage />} />
                <Route path='/Aboute' element={<AboutePage />} />
