@@ -34,7 +34,8 @@ const ProductCard: React.FC<ProductCardProps> = ({id,attributes}) => {
           <CardContent>
             <CardContent>
               <CardContent className="grid w-full items-center gap-4">
-                <CardContent className="h-auto flex items-center justify-center">
+                <CardContent 
+                className="h-auto flex items-center justify-center">
                   <img
                     width={'200px'}
                     height={'auto'}
@@ -42,14 +43,16 @@ const ProductCard: React.FC<ProductCardProps> = ({id,attributes}) => {
                     alt={attributes.title}
                   />
                 </CardContent>
-                <CardTitle className="py-3">Prix : $ {attributes.price}</CardTitle>
+                <CardTitle className="py-3">
+                  Prix : $ {attributes.price}</CardTitle>
 
-                <CardDescription className="py-3 flex items-center justify-between">
+                {/* <CardDescription 
+                className="py-3 flex items-center justify-between">
                   <CardTitle>Stock: {attributes.stock}</CardTitle>
                   
                   <CardTitle>Rate: {attributes.rate}</CardTitle>
                   
-                </CardDescription>
+                </CardDescription> */}
 
                 <CardDescription className="py-3">
                   {attributes.des}

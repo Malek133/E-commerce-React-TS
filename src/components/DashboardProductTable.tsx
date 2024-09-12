@@ -67,7 +67,7 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   });
   const { isLoading, data, error } = useGetDashboardProductsQuery(
     { page:currentPage });
-  console.log(newProduct);
+  // console.log(newProduct);
  const [destroyProduct,{isLoading:isDestroy,isSuccess}
 ]=  useDeleteDashboardProductsMutation();
 
@@ -180,7 +180,7 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
     });
   };
 
-  // const onSubmitHandlerCreat = () => {
+ 
   //   const formData = new FormData();
   //   formData.append('data', JSON.stringify({
   //     title: newProduct.title,

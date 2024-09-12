@@ -115,7 +115,8 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
   if (isLoading) return <CardContent><SkeletonDemo /></CardContent>;
 
   return (
-    <CardContent className="h-auto grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 m-10">
+    <CardContent 
+    className="h-auto grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 m-10">
       { data.data && data.data.map((i: ProductData) => (
         <ProductCard key={i.id} {...i} />
       ))}

@@ -6,23 +6,32 @@ import { useDispatch } from 'react-redux';
 import { removeFromCart } from '@/app/feauture/CartSlice';
 
 
-
-
 interface CarteDrawerItemProps {
   id: string;
-  attributes: {
-    image: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-    price: number;
-    title: string;
-  };
+  name: string;
+  price: number;
   quantity: number;
+  image: string;
+  attributes?: any; // Make it optional or define the exact type
 }
+
+
+
+// interface CarteDrawerItemProps {
+//   id: string;
+//   attributes: {
+//     image: {
+//       data: {
+//         attributes: {
+//           url: string;
+//         };
+//       };
+//     };
+//     price: number;
+//     title: string;
+//   };
+//   quantity: number;
+// }
 
 const CarteDrawerItem:FC<CarteDrawerItemProps> =({ id, attributes: { image, price, title }, quantity }) => {
      const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import loginSlice from './feauture/LoginSlice'
-import cartSlice from './feauture/CartSlice';
+import cartSlice ,{CartState} from './feauture/CartSlice';
 // import globalSlice from './feauture/GlobalSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -10,7 +10,9 @@ const persistCartConfig = {
   key: 'cart',
   storage,
 };
-const persistedCart = persistReducer(persistCartConfig,cartSlice)
+// const persistedCart = persistReducer(persistCartConfig,cartSlice)
+
+const persistedCart = persistReducer<CartState>(persistCartConfig, cartSlice);
 
 
 export const store = configureStore({

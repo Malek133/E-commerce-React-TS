@@ -16,27 +16,18 @@ import { clearFromCart, selectCart } from "@/app/feauture/CartSlice";
 import CarteDrawerItem from "./CarteDrawerItem";
 import { CardTitle } from "./ui/card";
 
-
-//  import { MouseEventHandler, useRef } from "react";
-// import { onCloseCartDrawerAction, selectGlobal } from "@/app/feauture/GlobalSlice";
-
 export function SheetCard() {
-  //  const btnRef = useRef()
-  //  const {isOpenCartDrawer} = useSelector(selectGlobal);
+  
     const dispatch = useDispatch()
-  //   const onClose: MouseEventHandler<HTMLButtonElement> = () => dispatch(onCloseCartDrawerAction()) 
-  //   const onOpen: MouseEventHandler<HTMLButtonElement> = () =>{
-  //     if (!isOpenCartDrawer) {
-  //       // If you need to handle specific open logic
-  //       console.log('Drawer Opened');
-  //     }
-  //   }
- const {CartProducts} = useSelector(selectCart)
+  
+
+ const {CartProducts} = useSelector(selectCart) 
+
+
   return (
     <Sheet>
       <SheetTrigger  asChild>
-        <Button 
-        // onClick={onOpen} 
+        <Button  
         variant="default"><ShoppingCart />
         <span className="text-base mx-3"> ({CartProducts.length})</span>
         </Button>
@@ -47,14 +38,15 @@ export function SheetCard() {
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. 
+            Click save when you're done.
           </SheetDescription>
         </SheetHeader>
 
         {
          CartProducts.length ? (
           CartProducts.map(i =>(
-          <CarteDrawerItem key={i.id} {...i} attributes={i.attributes} /> )) 
+          <CarteDrawerItem key={i.id} {...i} /> )) 
           ) : (
           <CardTitle>No Product</CardTitle>)    
         }
@@ -66,7 +58,6 @@ export function SheetCard() {
           <SheetClose asChild>
           
             <Button 
-            // onClick={onClose} 
             type="submit">Cancel</Button>
           </SheetClose>
         </SheetFooter>

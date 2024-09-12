@@ -46,8 +46,6 @@ function App() {
                <Route path='/Stat' element={<StatPage />} />
                <Route path='/Aboute' element={<AboutePage />} />
            
-    
-
 
      {/* <Route path='/Login' element={<LogInPage   />} />  */}
       </Routes>

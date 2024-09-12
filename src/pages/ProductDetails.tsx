@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
+  // CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -154,7 +154,7 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
             </Link>
 
 <section className="flex items-center justify-between m-10">
-    {/* <div></div> */}
+    
     <CardContent></CardContent>
       <Card className="w-[550px]">
         <CardHeader>
@@ -171,14 +171,17 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
                   alt={attributes.title}
                 />
               </div>
-              <CardTitle className="py-3">Prix : $ {attributes.price}</CardTitle>
-              <CardDescription className="py-3">
+              <CardTitle className="py-3">
+                Prix : $ {attributes.price}</CardTitle>
+
+              {/* <CardDescription className="py-3">
                 
                 Stock: {attributes.stock}
                 <br />
                 Rate: {attributes.rate}
                 <br />
-              </CardDescription>
+              </CardDescription> */}
+
             </div>
           </form>
         </CardContent>

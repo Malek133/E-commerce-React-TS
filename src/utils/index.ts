@@ -5,10 +5,10 @@ interface ICartProduct {
     name: string;
     price: number;
     quantity: number;
-    image: string; // URL or path to the product's image
+    image: string;
   }
 
-export const AddItemToShoppingCart = (
+ export const AddItemToShoppingCart = (
     cartItem: ICartProduct, // Ensure this type is correct
     shoppingCart: ICartProduct[] // Explicitly typing shoppingCart
 ): ICartProduct[] => { // Ensure the return type is correct
@@ -25,3 +25,6 @@ export const AddItemToShoppingCart = (
     return [...shoppingCart, { ...cartItem, quantity: 1 }];
 };
 
+
+
+  
