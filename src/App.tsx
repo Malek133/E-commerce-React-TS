@@ -14,6 +14,7 @@ import AdminDashboard from './pages/dashboard';
 import ProductDetails from './pages/ProductDetails';
 import Nav from './components/Nav';
 import ProtectedRoute from './components/ProtectedRoute'
+import ProtectedRouteJwt from './components/ProtectedRouteJwt';
 
 function App() {
   
@@ -28,10 +29,11 @@ function App() {
      
        
 
-             <Route element={<ProtectedRoute><DashboardLyaout /></ProtectedRoute>} 
+             <Route element={
+              <DashboardLyaout />} 
              path="/Dashboard">
-               <Route index element={< DashboardProducts />} />
-               <Route path="products" element={<AdminDashboard />} />
+               <Route index element={<AdminDashboard />} />
+               <Route path="products" element={<ProtectedRouteJwt><DashboardProducts /></ProtectedRouteJwt>} />
                <Route path="Explore" element={<h5>Explore test</h5>} />
                <Route path="Categories" element={<h5>Categories test</h5>} />
                <Route path="Settings" element={<h5>Settings test</h5>} />

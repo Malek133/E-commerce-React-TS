@@ -2,15 +2,31 @@ import { axiosInstance } from "@/api/ConfigueAxios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import CookiesService from '../../services/CookiesService'
 
+export interface UserLoginResponse {
+    jwt: string;
+    user: {
+      id: number;
+      email: string;
+      username: string;
+    };
+  }
+  
+
 const initialState: {
     loading: boolean;
-    data: any; 
+    data: UserLoginResponse | null; 
     error: string | null;  
 } = {
     loading: false,
     data: null,
     error: null,
 };
+
+interface APIError {
+    message: string;
+    [key: string]: string; // Allow any additional fields
+  }
+  
 
 
 export const userLogin = createAsyncThunk("login/userLogin", 
@@ -57,7 +73,7 @@ const loginSlice = createSlice({
             .addCase(userLogin.rejected, (state, action) => {
                 state.loading = false;
                 state.data = null;
-                state.error = (action.payload as any)?.message || "An error occurred";
+                state.error = (action.payload as APIError)?.message || "An error occurred";
                 // toast({
                 //     title: action.payload.response.data.error.message,
                 //     description: "We've created your account for you.",

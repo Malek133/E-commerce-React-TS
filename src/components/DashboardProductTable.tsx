@@ -6,12 +6,14 @@ import { useCreateDashboardProductMutation, useDeleteDashboardProductsMutation,
   useEditDashboardProductsMutation,
   useGetDashboardProductsQuery } from '@/app/services/ApiSlice';
 import { SkeletonDashboard } from './SkelatonDashboard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AlertDialogCustom } from '@/shared/AlertDialogueCustom';
 import { AlertDeleteDialogue } from '@/shared/AlertDeleteDialogue';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from './ui/textarea';
+ import Cookies from 'universal-cookie';
+
 
 interface ProductAttributes {
   title: string;
@@ -76,7 +78,9 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
 
   const [createProduct,{isLoading:iscreate,
     isSuccess:iscreateSuccess}]=useCreateDashboardProductMutation();
-
+  
+    const navigate = useNavigate(); // Initialize useNavigate hook
+   const cookies = new Cookies(); // Initialize cookies
 
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,11 +177,16 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   };
   
 
-  const onNewChangeThumbnailHandler = (e:any) => {
-    setNewProduct({
-      ...newProduct,
-      image: e.target.files[0],
-    });
+  const onNewChangeThumbnailHandler = (
+    e:React.ChangeEvent<HTMLInputElement>) => {
+
+    const file = e.target.files?.[0]; // Use optional chaining to avoid null
+    if (file) {
+      setNewProduct({
+        ...newProduct,
+        image: file,
+      });
+    }
   };
 
  
@@ -241,8 +250,20 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
     }
   };
   
+  const handleLogout = () => {
+    // Supprimez le cookie JWT
+    cookies.remove('jwt', { path: '/' });
   
-
+    // Vérifiez si le cookie a bien été supprimé
+    const jwt = cookies.get('jwt');
+    if (!jwt) {
+      // Si le JWT est supprimé, redirigez l'utilisateur vers la page de connexion
+      navigate('/Dashboard');
+    } else {
+      console.error('Le JWT n\'a pas pu être supprimé.');
+    }
+  };
+  
   useEffect(() =>{
   if(isSuccess){
     setClikedProductId(null)
@@ -262,7 +283,6 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
       image: null,
     })
   }
-
   },[isSuccess,isEditingSuccess,iscreateSuccess])
  
   if (isLoading) return <SkeletonDashboard />;
@@ -313,8 +333,14 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
 
   return (
     <>
-     <div className="w-full mb-56">
-           <div className='my-6 flex justify-end'>
+     <div className="w-full">
+           <div className='my-6 flex justify-between'>
+
+           <Button 
+            onClick={handleLogout} 
+           className='bg-red-500 px-7'>
+            Logout
+          </Button>
 
             <Button onClick={()=>{handleCreate()}}
                className='bg-cyan-500 px-7'>

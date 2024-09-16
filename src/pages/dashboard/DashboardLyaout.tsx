@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 import { LucideIcon } from 'lucide-react';
-import { Compass, House, Settings, Star, TrendingUp } from 'lucide-react';
+import { Compass, House, Settings, Star,
+  //  TrendingUp 
+  } from 'lucide-react';
 import { Outlet,
      Link as RouterLink } from 'react-router-dom';
 
@@ -12,13 +14,14 @@ import { Outlet,
       }
      
 
-     const LinkItems = [
+      const LinkItems = [
         {to:"/Dashboard", name: 'Home', icon: House },
-        { to:"/Dashboard/Products",name: 'Products', icon: TrendingUp },
+        // { to:"/Dashboard/Products",name: 'Products', icon: TrendingUp },
         {to:"/Dashboard/Explore", name: 'Explore', icon: Compass },
         {to:"/Dashboard/Categories", name: 'Categories', icon: Star },
         {to:"/Dashboard/Settings", name: 'Settings', icon: Settings },
       ]
+       
 
       const SidebarContent = () => {
         return(
@@ -31,8 +34,10 @@ import { Outlet,
     </section> 
         )
       }
-
-      const NavItem: React.FC<NavItemProps> = ({ to, icon: Icon, children, ...rest }) => {
+    
+      const NavItem: React.FC<NavItemProps> = ({ to,
+        //  icon: Icon,
+          children, ...rest }) => {
         return (
           <RouterLink
           className='textDecoratio-none'
@@ -55,18 +60,18 @@ import { Outlet,
             </section>
           </RouterLink>
         )
-      }
-const DashboardLyaout = (
-  // {isAuthenticated}:{isAuthenticated:string | undefined}
-) => {
-  // if(!isAuthenticated) return <Navigate to="/Login" replace />
-  return (
-    <section className='h-full flex items-center' >
+       }
 
-        <div className='h-screen box py-6  rounded'>
-          <SidebarContent 
-    //  onClose={() => console.log('close')} 
-     />
+
+           const DashboardLyaout = ( ) => {
+          
+       return (
+          <section className='h-full flex items-center' >
+
+          <div className='h-screen box py-6  rounded'>
+               <SidebarContent  
+      //  onClose={() => console.log('close')}  
+          /> 
         </div>
     
      

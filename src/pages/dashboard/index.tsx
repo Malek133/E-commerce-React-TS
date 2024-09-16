@@ -1,9 +1,17 @@
 
+ import CookiesService from "@/services/CookiesService"
+import LogInPage from "../LogInPage"
+
 
 const AdminDashboard = () => {
+
+       const token = CookiesService.get('jwt')
+
     return (
           <>
-          AdminDashboard
+          <LogInPage
+           isAuthenticated={token}
+            />
           </>
     )
   }

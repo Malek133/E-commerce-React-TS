@@ -1,12 +1,10 @@
 
-
  import { addToCart } from "@/app/feauture/CartSlice";
 import { SkeletonDemoDetails } from "@/components/SkeletonProductDetails";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  // CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -122,7 +120,7 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
       
         document.title = `Product store | Product ${id} Page`;
       
-    }, []);
+    }, [id]);
 
     if (isLoading)
       return (
@@ -136,8 +134,6 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
   const attributes = product?.attributes;
 
   if (!attributes) return <div>Produit non trouvé</div>;
-  
-  // const { attributes } = data;
 
 
   const AddToCartHandler = () =>{
@@ -147,7 +143,7 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
  
   return (
     <>
-        <Link to='/Products'>
+        <Link to={'/Products'}>
         <Button  className="px-10 py-6 w-fit text-xl">
               Back 
             </Button> 

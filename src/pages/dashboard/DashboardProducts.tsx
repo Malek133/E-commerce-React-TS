@@ -24,6 +24,7 @@ const DashboardProducts = () => {
   return (
     <>
      <DashboardProductsTable {...product} />
+      
     </>
   )
 }

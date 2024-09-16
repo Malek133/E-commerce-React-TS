@@ -32,7 +32,7 @@ class CookiesService {
   }
 
   // SET
-  set(name: string, value: any, options?: CookieSetOptions): void {
+  set(name: string, value:string | object | number, options?: CookieSetOptions): void {
     cookies.set(name, value, options);
   }
 

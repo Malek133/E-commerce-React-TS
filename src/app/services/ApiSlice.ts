@@ -1,4 +1,4 @@
-// import CookiesService from '@/services/CookiesService';
+ import CookiesService from '@/services/CookiesService';
 import { createApi,fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const apiSlice = createApi({
@@ -31,9 +31,9 @@ export const apiSlice = createApi({
               return {
                 url:`/api/products/${id}`,
                 method:'DELETE',
-                // headers:{
-                //   Authorization:`Bearer ${CookiesService.get('jwt')}`
-                // }
+                headers:{
+                  Authorization:`Bearer ${CookiesService.get('jwt')}`
+                }
               }
             },
             invalidatesTags: [{ type: 'Products', id: 'LIST' }],
@@ -45,9 +45,9 @@ export const apiSlice = createApi({
             
               url:`/api/products/${id}`,
               method:'PUT',
-            //   headers:{
-            //     Authorization:`Bearer ${CookiesService.get('jwt')}`
-            //   },
+              headers:{
+                Authorization:`Bearer ${CookiesService.get('jwt')}`
+              },
               body,
           }),
           async onQueryStarted({id,...path},{dispatch,queryFulfilled}){
@@ -70,9 +70,9 @@ export const apiSlice = createApi({
         query: (formData) => ({
           url: `/api/products`,
           method: 'POST',
-        //   headers: {
-        //     Authorization: `Bearer ${CookiesService.get('jwt')}`
-        //   },
+          headers: {
+            Authorization: `Bearer ${CookiesService.get('jwt')}`
+          },
           body: formData,
         }),
         async onQueryStarted(body, { dispatch, queryFulfilled }) {

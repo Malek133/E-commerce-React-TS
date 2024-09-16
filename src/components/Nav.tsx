@@ -6,6 +6,7 @@ import { SheetCard } from './SheatCard';
 import { SignedIn, SignedOut,
    SignInButton, UserButton
    } from "@clerk/clerk-react";
+import { Button } from './ui/button';
 
 
 
@@ -34,20 +35,21 @@ const Nav = () => {
          {/* <Button className='hover:bg-red-400'>
           <Link to='/Login'>LogIn</Link>
              </Button> */}
-             <div>
+             <div className='flex'>
+
+             
+             <Button className='hover:bg-red-400 mx-5'>
+                 <Link to={'/Dashboard'}>
+                    Dashboard
+                 </Link> 
+             </Button>
+      
+
       <SignedOut>
         <SignInButton />
       </SignedOut>
       <div className='flex justify-between items-center gap-10 text-lg font-semibold'>
          <SignedIn>
-
-      <Link to={'/Dashboard'}>
-           
-              <span className=''>
-              Dashboard
-                </span>
-           
-          </Link>
 
           <Link to={'/Products'}>
            
