@@ -40,7 +40,7 @@ const Nav = () => {
              
              <Button className='hover:bg-red-400 mx-5'>
                  <Link to={'/Dashboard'}>
-                    Dashboard
+                    Admin
                  </Link> 
              </Button>
       
