@@ -2,16 +2,12 @@
 import { selectLogin, userLogin } from "@/app/feauture/LoginSlice"
 import { AppDispatch } from "@/app/store"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+import { Card,CardDescription,
+  CardFooter,CardHeader,CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import CookiesService from "@/services/CookiesService"
+import CookiesService from "@/services/CookiesService" 
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {useNavigate,Navigate
@@ -21,8 +17,7 @@ const LogInPage = (
    { isAuthenticated }: { isAuthenticated: string | undefined }
 ) => {
   const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate(); // Utilisation de useNavigate pour redirection
-  // const cookies = new Cookies();  // Création d'une instance de Cookies
+  const navigate = useNavigate();
   const { loading, data, error } = useSelector(selectLogin);
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
@@ -46,7 +41,7 @@ const LogInPage = (
 
     if (user.identifier !== "" && user.password !== "") {
       console.log(user);
-      GoToDash(); // Appel de la fonction de redirection après validation
+      GoToDash();
     }
   };
 
@@ -55,7 +50,7 @@ const LogInPage = (
      const token = CookiesService.get('jwt')
 
     if (token) {
-      navigate("/Dashboard/products"); // Redirection vers la page de dashboard si le JWT existe
+      navigate("/Dashboard/products");
     } else {
       alert("JWT manquant. Veuillez vous connecter pour accéder au tableau de bord.");
     }

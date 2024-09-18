@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Trash2, Pencil, X } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useCreateDashboardProductMutation, useDeleteDashboardProductsMutation,
+import { Trash2, Pencil, X,LogOut,FolderPlus } from 'lucide-react';
+import { Table, TableBody, TableCell,
+   TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useCreateDashboardProductMutation,
+   useDeleteDashboardProductsMutation,
   useEditDashboardProductsMutation,
   useGetDashboardProductsQuery } from '@/app/services/ApiSlice';
 import { SkeletonDashboard } from './SkelatonDashboard';
@@ -51,7 +53,7 @@ interface ProductCardProps {
   attributes: ProductAttributes;
 }
 
-const ITEMS_PER_PAGE = 5;
+ const ITEMS_PER_PAGE = 5;
 
 const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +71,7 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
   });
   const { isLoading, data, error } = useGetDashboardProductsQuery(
     { page:currentPage });
-  // console.log(newProduct);
+ 
  const [destroyProduct,{isLoading:isDestroy,isSuccess}
 ]=  useDeleteDashboardProductsMutation();
 
@@ -333,18 +335,18 @@ const DashboardProductsTable: React.FC<ProductCardProps> = () => {
 
   return (
     <>
-     <div className="w-full">
-           <div className='my-6 flex justify-between'>
+     <div className="w-full mb-72">
+           <div className='mb-14 flex justify-between'>
 
            <Button 
             onClick={handleLogout} 
            className='bg-red-500 px-7'>
-            Logout
+            <LogOut />
           </Button>
 
             <Button onClick={()=>{handleCreate()}}
-               className='bg-cyan-500 px-7'>
-                Create
+               className='px-7'>
+                <FolderPlus />
             </Button>
 
            </div>

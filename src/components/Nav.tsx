@@ -8,8 +8,6 @@ import { SignedIn, SignedOut,
    } from "@clerk/clerk-react";
 import { Button } from './ui/button';
 
-
-
 const Nav = () => {
   return (
     <>
@@ -17,8 +15,7 @@ const Nav = () => {
         <div className='text-4xl font-semibold'>
            <Link to='/'>
            My App
-           </Link> 
-        
+           </Link>
             <ul className='flex items-center justify-center gap-10 text-md font-medium'>
 
                  {/* <li><Link to="/Dashboard">Dashboard</Link></li> */}
@@ -32,64 +29,42 @@ const Nav = () => {
             </ul>
         </div>
         <div className="flex justify-center items-center space-x-5">
-         {/* <Button className='hover:bg-red-400'>
-          <Link to='/Login'>LogIn</Link>
-             </Button> */}
              <div className='flex'>
 
-             
              <Button className='hover:bg-red-400 mx-5'>
                  <Link to={'/Dashboard'}>
                     Admin
                  </Link> 
              </Button>
       
-
       <SignedOut>
-        <SignInButton />
+        <Button><SignInButton /></Button>
       </SignedOut>
       <div className='flex justify-between items-center gap-10 text-lg font-semibold'>
          <SignedIn>
 
           <Link to={'/Products'}>
-           
-              <span className=''>
-              Products
-                </span>
-            
+              <span className=''>Products </span>
           </Link>
 
           <Link to={'/Aboute'}>
            
-           <span className=''>
-           Aboute
-             </span>
+           <span className=''> Aboute </span>
          
        </Link>
 
        <Link to={'/Stat'}>
-           
-           <span className=''>
-          Stat
-             </span>
-         
+           <span className=''>Stat </span>
        </Link>
-          
+
         <UserButton />
          <SheetCard />
       </SignedIn> 
       
       </div>
-
-   
     </div>
-   
-      
-     
             <ModeToggle />
-            
           </div>
-          
       </div>
     </>
   )

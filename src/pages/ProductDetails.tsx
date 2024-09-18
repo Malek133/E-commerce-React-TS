@@ -163,7 +163,8 @@ const ProductDetails: React.FC<ProductsPageProps> = () => {
                 <img
                   width={'200px'}
                   height={'auto'}
-                  src={`${import.meta.env.VITE_SERVER_URL}${attributes.image.data.attributes.url}`}
+                  src={attributes.image.data.attributes.url}
+                  // src={`${import.meta.env.VITE_SERVER_URL}${attributes.image.data.attributes.url}`}
                   alt={attributes.title}
                 />
               </div>
